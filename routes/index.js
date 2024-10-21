@@ -18,6 +18,8 @@ router.use((err,req, res, next) => {
             status: err.status
         }
         })
+
+        return next(err);
 });
 
 module.exports = router;

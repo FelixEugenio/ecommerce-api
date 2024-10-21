@@ -16,13 +16,20 @@ class UserController {
     }
 
     // Get user by ID
-    show = (req, res, next) => {
-        User.findById(req.params.id).populate('shop')
-            .then(user => {
-                if (!user) return res.status(401).json({ message: 'User not registered' });
-                return res.json({ user: { name: user.name, email: user.email, shop: user.shop, permissions: user.permissions } });
-            })
-            .catch(next);
+    show(req, res, next){
+        User.findById(req.params.id)
+        //.populate({ path: "store" })
+        .then(user => {
+            if(!user) return res.status(401).json({ errors: "User not registered" });
+            return res.json({
+                user: {
+                    name: user.name,
+                    email: user.email,
+                    permissions: user.permissions,
+                    store: user.store
+                }
+            });
+        }).catch(next);
     }
 
     // Register a new user
@@ -55,13 +62,14 @@ class UserController {
     }
 
     // Delete user
-    destroy = (req, res, next) => {
-        User.findById(req.payload.id)
-            .then(user => {
-                if (!user) return res.status(401).json({ message: 'User not registered' });
-                return user.remove().then(() => res.json({ message: 'User deleted' }));
-            })
-            .catch(next);
+    remove(req, res, next){
+        User.findById(req.payload.id).then(user => {
+            if(!user) return res.status(401).json({ errors: "User not registered" });
+            return user.deleteOne()
+            .then(() => {
+                return res.json({ deletado: true });
+            }).catch(next);
+        }).catch(next);
     }
 
     // User login
