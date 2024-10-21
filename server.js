@@ -10,10 +10,12 @@ const nodemailer = require('nodemailer');
 const multer = require('multer');
 const ejs = require('ejs');
 const morgan = require('morgan');
+const helmer = require('helmet');
 
 
 //Start
 const app = express();
+app.use(express.json());
 
 // Variaveis Ambiente
 const isProduction = process.env.NODE_ENV === 'production';
@@ -27,12 +29,13 @@ app.use("/public/images", express.static((__dirname + '/public/images')));
 //MongoDb Setup
 const dbs = require('./config/database');
 const compression = require('compression');
+const { default: helmet } = require('helmet');
 const dbURI = isProduction ? dbs.dbProduction : dbs.dbTest;
 mongoose.connect(dbURI, {
     useNewUrlParser: true,
 })
 
-app.use(express.json());
+app.use(helmet())
 
 
 //Setup EJS

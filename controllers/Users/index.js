@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const User = mongoose.model('users');
 const jwt = require('jsonwebtoken');
 const secret = require('../../config').secret;
-
+const sendEmailRecovery = require('../../helpers/email-recovery');
 class UserController {
     // Get all users
     index = (req, res, next) => {
@@ -76,6 +76,7 @@ class UserController {
         }).catch(next);
     }
 
+    //
     showRecovery(req, res, next) {  
         return res.render('recovery', { err: null, success: null });
     }
@@ -88,7 +89,11 @@ class UserController {
         User.findOne({ email }, (err, user) => {
             if (!user) return res.status(401).json({ message: 'User not registered' });
             const recoveryData = user.generateRecoverToken();
-            return user.save().then(() => res.render('recovery', { err: null, success: true })).catch(next);
+            return user.save().then(() => 
+                sendEmailRecovery({user,recovery: recoveryData},(err = null, success = null) => {
+                    return res.render('recovery', { err, success })
+                })
+            ).catch(next);
         }).catch(next);
     }
 
