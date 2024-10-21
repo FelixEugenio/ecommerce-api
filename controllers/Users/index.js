@@ -32,6 +32,8 @@ class UserController {
      store(req, res, next) {
         const {name , email, password} = req.body;
 
+        if(!email || !password || !name) return res.status(422).json({message: 'Auth failed'});
+        
         const user = new User({name, email});
           user.setPassword(password);
 
@@ -85,6 +87,30 @@ class UserController {
             const recoveryData = user.generateRecovery();
             return user.save().then(() => {
                 return res.render('recovery', {err:null,sucess:true});
+            }).catch(next);
+        }).catch(next);
+    }
+
+    // GET / Password-recovered quando o usuario ja tiver com o Token
+    showCompleteRecovery(req, res, next) {
+        if(!req.query.token) return res.render('recovery', {err:'Token not identified',sucess:null});
+        User.findOne({'recovery.token': req.query.token}).then(user => {
+            if(!user) return res.render('recovery', {err:'Token not identified',sucess:null});
+            if(new Date(user.recovery.date) < new Date()) return res.render('recovery', {err:'Token expired',sucess:null});
+            return res.render('recovery/store', {err:null,sucess:null});
+        }).catch(next);
+    }
+
+    //POST senha recuperada
+    CompleteRecovery(req, res, next) {
+        const {token, password} = req.body;
+        if(!token || !password) return res.render('recovery/store', {err:'Token not identified',sucess:null});
+        User.findOne({'recovery.token': token}).then(user => {
+            if(!user) return res.render('recovery/store', {err:'Token not identified',sucess:null});
+            user.finishRecoverToken();
+            user.setPassword(password);
+            return user.save().then(() => {
+                return res.render('recovery/store', {err:null,sucess: 'Senha alterada com sucesso!.Tente fazer login',token:null});
             }).catch(next);
         }).catch(next);
     }
