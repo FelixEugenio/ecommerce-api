@@ -27,11 +27,11 @@ class UserController {
 
     // Register a new user
     store = (req, res, next) => {
-        const { name, email, password } = req.body;
+        const { name, email, password ,store} = req.body;
+       
+        if (!email || !password || !name || !store) return res.status(422).json({ message: 'Please, fill in all fields' });
 
-        if (!email || !password || !name) return res.status(422).json({ message: 'Auth failed' });
-
-        const user = new User({ name, email });
+        const user = new User({ name, email ,store });
         user.setPassword(password);
 
         user.save()
@@ -65,13 +65,11 @@ class UserController {
     }
 
     // User login
-    login = (req, res, next) => {
+    login(req, res, next){
         const { email, password } = req.body;
-        if (!email || !password) return res.status(422).json({ message: 'Auth failed' });
-
-        User.findOne({ email }, (err, user) => {
-            if (!user) return res.status(401).json({ message: 'User not registered' });
-            if (!user.validPassword(password)) return res.status(401).json({ message: 'Wrong password' });
+        User.findOne({ email }).then((user) => {
+            if(!user) return res.status(401).json({ errors: "User not registered" });
+            if(!user.validPassword(password)) return res.status(401).json({ errors: "Invalid password" });
             return res.json({ user: user.toAuthJSON() });
         }).catch(next);
     }

@@ -19,14 +19,14 @@ const UserSchema = new mongoose.Schema({
         index:true,
         match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
     },
-    shop: {
+    store: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Loja',
-        required: [true, 'Loja is required']
+        ref: 'store',
+        required: [true, 'store is required']
     },
     permissions: {
         type: Array,
-        default: ['cliente'],
+        default: ['costumer'],
     },
     hash: String,
     salt: String,

@@ -6,8 +6,8 @@ const userController = new UserController();
 
 
 
-router.post('/login', userController.login);
-router.post('/register', userController.store);
+router.post('/login', userController.login);//testado
+router.post('/register', userController.store);//testado
 router.put('/', auth.required, userController.update);
 router.delete('/', auth.required, userController.destroy);
 

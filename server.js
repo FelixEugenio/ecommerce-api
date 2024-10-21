@@ -10,7 +10,7 @@ const nodemailer = require('nodemailer');
 const multer = require('multer');
 const ejs = require('ejs');
 const morgan = require('morgan');
-const helmer = require('helmet');
+require('dotenv').config();
 
 
 //Start
