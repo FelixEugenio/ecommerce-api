@@ -76,8 +76,12 @@ class UserController {
         }).catch(next);
     }
 
-    // Show recovery password page
-    showRecovery = (req, res, next) => {
+    showRecovery(req, res, next) {  
+        return res.render('recovery', { err: null, success: null });
+    }
+
+    // create recovery password page
+    createRecovery = (req, res, next) => {
         const { email } = req.body;
         if (!email) return res.status(422).json({ message: 'Email required' });
 

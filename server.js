@@ -32,6 +32,9 @@ mongoose.connect(dbURI, {
     useNewUrlParser: true,
 })
 
+app.use(express.json());
+
+
 //Setup EJS
 app.set('view engine', 'ejs');
 

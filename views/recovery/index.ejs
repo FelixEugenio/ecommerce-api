@@ -1,42 +1,40 @@
-<!DocType html>
-<html>
-    <head>
-        <% include('./partials/head.ejs') %>
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    </head>
-    <body>
-        <div class="container">
-           <div class="row">
-            <div class="col-sm-6 col-sm-offset-3 ">
-                <h2>Recuperar senha</h2>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <% include('../partials/header.ejs') %>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6 col-sm-offset-3">
+                <h2>Recuperar Senha</h2>
                 <hr /><br />
 
-                <% if(sucess){ %>
+                <% if (typeof success !== 'undefined' && success) { %>
                     <div class="alert alert-success">
-                        <%= sucess %>
+                        <%= success %>
                     </div>
                 <% } %>
 
-                <% if(error){ %>
+                <% if (typeof error !== 'undefined' && error) { %>
                     <div class="alert alert-danger">
                         <%= error %>
                     </div>
                 <% } %>
 
                 <p>
-                    Digite seu email e clique no link para recuperar sua senha
+                    Digite seu email e clique no botão para recuperar sua senha.
                 </p>
 
-                <form action="/api/v1/users/recovery-password" method="post">
+                <form action="/v1/api/users/recovery-password" method="post">
                     <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" name="email" id="email" class="form-control" placeholder="Digite seu email"/>
+                        <input type="email" name="email" id="email" class="form-control" placeholder="Digite seu email" required />
                     </div>
-                    <button type="submit" class="btn btn-primary">Recuperar senha</button>
+                    <button type="submit" class="btn btn-primary">Recuperar Senha</button>
                 </form>
             </div>
-           </div>
         </div>
-    </body>
+    </div>
+</body>
 </html>
-
