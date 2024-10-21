@@ -32,10 +32,10 @@ class UserController {
      store(req, res, next) {
         const {name , email, password} = req.body;
 
-        const User = new User({name, email});
-          User.setPassword(password);
+        const user = new User({name, email});
+          user.setPassword(password);
 
-        User.save().then(() => {
+        user.save().then(() => {
             return res.json({user: user.toAuthJSON()});
         }).catch(next);
     }
@@ -52,7 +52,6 @@ class UserController {
              return user.save().then(() => {
                  return res.json({user: user.toAuthJSON()});
              })
-         
         }).catch(next);
     }
 
@@ -63,6 +62,30 @@ class UserController {
             return user.remove().then(() => {
                 return res.json({message: 'User deleted'});
             })
+        }).catch(next);
+    }
+
+    //Login
+    login(req, res, next) {
+        const {email, password} = req.body;
+        if(!email || !password) return res.status(422).json({message: 'Auth failed'});
+        User.findOne({email}, function(err, user) {
+            if(!user) return res.status(401).json({message: 'User not registered'});
+            if(!user.validPassword(password)) return res.status(401).json({message: 'Wrong password'});
+            return res.json({user: user.toAuthJSON()});
+        }).catch(next);
+    }
+
+    //Recovery password , POST para recuperacao de senha
+    showRecovery(req, res, next) {
+        const {email} = req.body;
+        if(!email) return res.status(422).json({message: 'Email required'});
+        User.findOne({email}, function(err, user) {
+            if(!user) return res.status(401).json({message: 'User not registered'});
+            const recoveryData = user.generateRecovery();
+            return user.save().then(() => {
+                return res.render('recovery', {err:null,sucess:true});
+            }).catch(next);
         }).catch(next);
     }
 }
