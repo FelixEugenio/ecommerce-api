@@ -40,7 +40,7 @@ const UserSchema = new mongoose.Schema({
 },{timestamps: true});
 
 //Fazendo pluguins para validação de email duplicado
-UserSchema.plugins(uniqueValidator, {
+UserSchema.plugin(uniqueValidator, {
     message: 'is already taken'
 });
 
