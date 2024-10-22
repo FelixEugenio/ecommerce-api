@@ -12,29 +12,27 @@ const StoreSchema = new mongoose.Schema({
         unique: true
     },
     email: {
-        type:{type:String},
+        type: String, // Corrected this line
         required: [true, 'Email is required'],
         unique: true
     },
     address: {
         type: {
             place: { type: String, required: true },
-        number: { type: String, required: true },
-        complement: { type: String },
-        neighborhood: { type: String, required: true},
-        city: { type: String, required: true },
-        CEP: { type: String, required: true },
+            number: { type: String, required: true },
+            complement: { type: String },
+            neighborhood: { type: String, required: true },
+            city: { type: String, required: true },
+            CEP: { type: String, required: true },
         },
         required: true
-        
     },
-    phone: {    
+    phone: {
         type: String,
         required: true
     },
-   
-},{timestamps: true});  
+}, { timestamps: true });
 
-StoreSchema.plugin(uniqueValidator,{message: 'is already taken'});
+StoreSchema.plugin(uniqueValidator, { message: 'is already taken' });
 
-module.exports = mongoose.model('store', StoreSchema)
+module.exports = mongoose.model('stores', StoreSchema);
