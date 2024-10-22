@@ -1,1 +1,2 @@
 require('./Users')
+require('./Store')
