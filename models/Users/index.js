@@ -30,7 +30,7 @@ const UserSchema = new mongoose.Schema({
     },
     hash: String,
     salt: String,
-    recover: {
+    recovery: {
         type:{
             token: String,
             date: Date
@@ -83,7 +83,7 @@ UserSchema.methods.toAuthJSON = function(){
 }
 
 //criar token de recuperação de senha
-UserSchema.methods.generateRecoverToken = function(){
+UserSchema.methods.generateRecoveryToken = function(){
     this.recovery = {}
     this.recovery.token = crypto.randomBytes(16).toString('hex');
     this.recovery.date = new Date(new Date().getTime() + 24*60*60*1000);

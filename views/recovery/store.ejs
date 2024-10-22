@@ -1,4 +1,4 @@
-<!DocType html>
+<!DOCTYPE html>
 <html>
     <head>
         <% include('../partials/header.ejs') %>
@@ -6,44 +6,41 @@
     </head>
     <body>
         <div class="container">
-           <div class="row">
-            <div class="col-sm-6 col-sm-offset-3 ">
-                <h2>Recuperar senha</h2>
-                <hr /><br />
+            <div class="row">
+                <div class="col-sm-6 col-sm-offset-3">
+                    <h2>Recuperar Senha</h2>
+                    <hr /><br />
 
-                <% if(sucess){ %>
-                    <div class="alert alert-success">
-                        <%= sucess %>
-                    </div>
-
-                    <div class="text-center">
-                        <h3>Agora pode fazer seu login</h3>
-                    </div>
-                <% } %>
-
-                <% if(error){ %>
-                    <div class="alert alert-danger">
-                        <%= error %>
-                    </div>
-                <% } %>
-
-                <% if(!sucess){  %>
-                    <p>
-                        Digite Aqui sua nova password
-                    </p>
-    
-                    <form action="/v1/api/users/password-recovery" method="post">
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="password" name="password"  class="form-control" placeholder="Digite sua nova password"/>
-                            <input type="hidden" name="token"  value="<%= token %>"/>
+                    <% if(success) { %>
+                        <div class="alert alert-success">
+                            <%= success %>
                         </div>
-                        <button type="submit" class="btn btn-primary">Recuperar senha</button>
-                    </form>
-                <%% } %>    
+
+                        <div class="text-center">
+                            <h3>Agora pode fazer seu login</h3>
+                        </div>
+                    <% } %>
+
+                    <% if(error) { %>
+                        <div class="alert alert-danger">
+                            <%= error %>
+                        </div>
+                    <% } %>
+
+                    <% if(!success) { %>
+                        <p>Digite aqui sua nova senha</p>
+    
+                        <form action="/v1/api/users/password-recovery" method="post">
+                            <div class="form-group">
+                                <label for="password">Nova Senha</label>
+                                <input type="password" name="password" class="form-control" placeholder="Digite sua nova senha" required />
+                                <input type="hidden" name="token" value="<%= token %>" />
+                            </div>
+                            <button type="submit" class="btn btn-primary">Recuperar Senha</button>
+                        </form>
+                    <% } %>    
+                </div>
             </div>
-           </div>
         </div>
     </body>
 </html>
-

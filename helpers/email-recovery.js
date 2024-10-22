@@ -1,18 +1,18 @@
 const nodemailer = require('nodemailer');
-const { root: link } = require('../config/index');
+const { api: link } = require('../config/index');
 
 module.exports = async ({ user, recovery }, cb) => {
     // Criação de conta de teste do Nodemailer
-    let testAccount = await nodemailer.createTestAccount(require('../config/email'));
+    let testAccount = await nodemailer.createTestAccount();
 
     // Criação do transporter
     const transporter = nodemailer.createTransport({
-        host: process.env.SMTP_HOST,
-        port: process.env.SMTP_PORT,
+        host: 'sandbox.smtp.mailtrap.io',
+        port: 2525,
         // true para 465, false para outros
         auth: {
-            user: process.env.SMTP_USER,
-            pass: process.env.SMTP_PASS,
+            user: '513d1e0e661221',
+            pass: 'b98c39a7532469',
         },
     });
 
