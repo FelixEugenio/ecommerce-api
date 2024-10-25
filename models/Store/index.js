@@ -1,38 +1,41 @@
-const mongoose = require('mongoose');
+const mogoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 
-const StoreSchema = new mongoose.Schema({
+const StoreSchema = new mogoose.Schema({
     name: {
         type: String,
         required: [true, 'Name is required']
+    },
+    email: {
+        type: String,
+        required: [true, 'Email is required'],
+        unique: true,
+        lowercase: true,
+        index:true,
+    },
+   
+    phone: {
+        type: String,
+        required: [true, 'Phone is required']
+    },
+    address: {
+        type: {
+            street: {type: String, required: [true, 'Street is required']},
+            number: {type: String, required: [true, 'Number is required']},
+            complement: {type: String},
+            neighborhood: {type: String, required: [true, 'Neighborhood is required']},
+            city: {type: String, required: [true, 'City is required']},
+            CEP: {type: String, required: [true, 'CEP is required']},
+        },
+        required: true, 
     },
     cnpj: {
         type: String,
         required: [true, 'CNPJ is required'],
         unique: true
     },
-    email: {
-        type: String, // Corrected this line
-        required: [true, 'Email is required'],
-        unique: true
-    },
-    address: {
-        type: {
-            place: { type: String, required: true },
-            number: { type: String, required: true },
-            complement: { type: String },
-            neighborhood: { type: String, required: true },
-            city: { type: String, required: true },
-            CEP: { type: String, required: true },
-        },
-        required: true
-    },
-    phone: {
-        type: String,
-        required: true
-    },
-}, { timestamps: true });
+},{timestamps: true});
 
-StoreSchema.plugin(uniqueValidator, { message: 'is already taken' });
+StoreSchema.plugin(uniqueValidator,{message:"Is Already in Use"});
 
-module.exports = mongoose.model('stores', StoreSchema);
+module.exports = mongoose.model('store', StoreSchema)

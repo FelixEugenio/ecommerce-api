@@ -6,13 +6,10 @@ const secret = require('../../config').secret;
 const sendEmailRecovery = require('../../helpers/email-recovery');
 class UserController {
     // Get all users
-    index = (req, res, next) => {
-        User.findById(req.payload.id)
-            .then(user => {
-                if (!user) return res.status(401).json({ message: 'User not registered' });
-                return res.json({ user: user.toAuthJSON() });
-            })
-            .catch(next);
+    index(req,res,next){
+        Store.find({  }).select("_id name cnpj email phone address")
+        .then(stores => res.send({ stores }))
+        .catch(next);
     }
 
     // Get user by ID
